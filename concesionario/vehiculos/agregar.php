@@ -8,7 +8,7 @@ $marcas = $conexion->query("SELECT * FROM Marca ORDER BY nombre");
 
 <h2>Agregar Nuevo Vehículo</h2>
 
-<form action="../includes/registrar_vehiculo.php" method="POST">
+<form class="formularios" action="../includes/registrar_vehiculo.php" method="POST">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">

@@ -2,6 +2,47 @@
 include '../includes/conexion.php';
 include '../includes/header.php';
 
+// Procesar eliminación si se envió el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eliminar_venta'])) {
+    $venta_id = $_POST['venta_id'];
+    
+    // Validar ID
+    if (is_numeric($venta_id)) {
+        // Iniciar transacción para eliminar registros relacionados
+        $conexion->begin_transaction();
+        
+        try {
+            // Eliminar financiamiento relacionado (si existe)
+            $conexion->query("DELETE FROM Financiamiento WHERE venta_id = $venta_id");
+            
+            // Eliminar la venta
+            $stmt = $conexion->prepare("DELETE FROM Venta WHERE venta_id = ?");
+            $stmt->bind_param("i", $venta_id);
+            $stmt->execute();
+            
+            if ($stmt->affected_rows > 0) {
+                $conexion->commit();
+                $_SESSION['mensaje'] = "Venta eliminada correctamente";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $conexion->rollback();
+                $_SESSION['mensaje'] = "No se encontró la venta especificada";
+                $_SESSION['tipo_mensaje'] = "warning";
+            }
+            
+            $stmt->close();
+            
+            // Redirigir para evitar reenvío del formulario
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        } catch (Exception $e) {
+            $conexion->rollback();
+            $_SESSION['mensaje'] = "Error al eliminar la venta: " . $e->getMessage();
+            $_SESSION['tipo_mensaje'] = "danger";
+        }
+    }
+}
+
 // Consulta para obtener todas las ventas con información relacionada
 $query = "SELECT v.venta_id, c.nombre as cliente, e.nombre as empleado, 
           ve.modelo as vehiculo, v.fecha_venta, v.precio_final, v.metodo_pago
@@ -14,6 +55,13 @@ $result = $conexion->query($query);
 ?>
 
 <h2>Registro de Ventas</h2>
+<?php if (isset($_SESSION['mensaje'])): ?>
+    <div class="alert alert-<?= $_SESSION['tipo_mensaje'] ?>">
+        <?= $_SESSION['mensaje'] ?>
+    </div>
+    <?php unset($_SESSION['mensaje'], $_SESSION['tipo_mensaje']); ?>
+<?php endif; ?>
+
 <a href="registrar.php" class="btn">Registrar Nueva Venta</a>
 
 <table>
@@ -53,6 +101,10 @@ $result = $conexion->query($query);
                 </td>
                 <td>
                     <a href="detalles.php?id=<?= $row['venta_id'] ?>" class="btn btn-sm btn-info">Detalles</a>
+                    <form method="POST" action="" style="display:inline;" onsubmit="return confirm('¿Estás seguro de eliminar esta venta?');">
+                        <input type="hidden" name="venta_id" value="<?= $row['venta_id'] ?>">
+                        <button type="submit" name="eliminar_venta" class="btn btn-sm btn-danger">Eliminar</button>
+                    </form>
                 </td>
             </tr>
         <?php endwhile; ?>

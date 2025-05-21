@@ -5,7 +5,7 @@ include '../includes/header.php';
 
 <h2>Agregar Nuevo Cliente</h2>
 
-<form action="../includes/registrar_cliente.php" method="POST">
+<form class="formularios" action="../includes/registrar_cliente.php" method="POST">
     <div>
         <label for="tipo_cliente">Tipo de Cliente:</label>
         <select name="tipo_cliente" id="tipo_cliente" required>

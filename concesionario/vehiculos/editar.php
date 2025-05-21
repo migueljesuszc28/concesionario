@@ -27,7 +27,7 @@ $marcas = $conexion->query("SELECT * FROM Marca ORDER BY nombre");
 
 <h2>Editar Vehículo</h2>
 
-<form action="../includes/actualizar_vehiculo.php" method="POST">
+<form class="formularios" action="../includes/actualizar_vehiculo.php" method="POST">
     <input type="hidden" name="vehiculo_id" value="<?= $vehiculo['vehiculo_id'] ?>">
     
     <div class="row">

@@ -91,7 +91,7 @@ tr:hover {
 }
 
 /* Formularios */
-form {
+.formularios {
     background: white;
     padding: 20px;
     border-radius: 5px;
@@ -100,7 +100,7 @@ form {
     margin: 20px auto;
 }
 
-form div {
+.formularios div {
     margin-bottom: 15px;
 }
 

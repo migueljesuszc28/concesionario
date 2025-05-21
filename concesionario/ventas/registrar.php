@@ -13,7 +13,7 @@ $vehiculos = $conexion->query("SELECT v.vehiculo_id, CONCAT(m.nombre, ' ', v.mod
 
 <h2>Registrar Nueva Venta</h2>
 
-<form id="form-venta" action="../includes/registrar_venta.php" method="POST">
+<form class="formularios" id="form-venta" action="../includes/registrar_venta.php" method="POST">
     <div class="form-group">
         <label for="cliente_id">Cliente:</label>
         <select name="cliente_id" id="cliente_id" class="form-control" required>

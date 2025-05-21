@@ -24,7 +24,7 @@ if(isset($_GET['id'])) {
 
 <h2>Editar Cliente</h2>
 
-<form action="../includes/actualizar_cliente.php" method="POST">
+<form class="formularios" action="../includes/actualizar_cliente.php" method="POST">
     <input type="hidden" name="cliente_id" value="<?= $cliente['cliente_id'] ?>">
     
     <div>
