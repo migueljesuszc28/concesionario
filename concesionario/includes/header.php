@@ -7,13 +7,20 @@
     <link rel="stylesheet" href="/concesionario/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Concesionario XYZ</h1>
-        <nav>
-            <a href="/concesionario/index.php">Inicio</a>
-            <a href="/concesionario/vehiculos/index.php">Vehículos</a>
-            <a href="/concesionario/clientes/index.php">Clientes</a>
-            <a href="/concesionario/ventas/index.php">Ventas</a>
-        </nav>
-    </header>
-    <main class="container"></main>
+<header>
+    <h1>Concesionario XYZ</h1>
+   <!-- <span class="welcome-user">Bienvenido,<?= htmlspecialchars($_SESSION['username']); ?></span>-->
+    <nav>
+        <a href="/concesionario/index.php">Inicio</a>
+        <a href="/concesionario/vehiculos/index.php">Vehículos</a>
+        <a href="/concesionario/clientes/index.php">Clientes</a>
+        <a href="/concesionario/ventas/index.php">Ventas</a>
+
+        <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']): ?>
+            <a href="/concesionario/auth/logout.php" class="logout-btn">Cerrar Sesión</a>
+        <?php else: ?>
+            <a href="/concesionario/auth/login.php" class="logout-btn">Iniciar Sesión</a>
+        <?php endif; ?>
+    </nav>
+</header>
+<main class="container">

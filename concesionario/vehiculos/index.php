@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header("Location: auth/login.php");
+    exit;
+}
 include '../includes/conexion.php';
 include '../includes/header.php';
 
@@ -14,38 +20,39 @@ $result = $conexion->query($query);
 <div class="container">
     <h2>Vehículos en Inventario</h2>
     <a href="agregar.php" class="btn">Agregar Vehículo</a>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Año</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
+    <div class="tabla-container">
+        <table>
+            <thead>
                 <tr>
-                    <td><?= $row['vehiculo_id'] ?></td>
-                    <td><?= $row['marca_nombre'] ?></td>
-                    <td><?= $row['modelo'] ?></td>
-                    <td><?= $row['anio'] ?></td>
-                    <td>$<?= number_format($row['precio'], 2) ?></td>
-                    <td><?= $row['stock'] ?></td>
-                    <!-- En la tabla de vehículos -->
-                    <td>
-                        <a href="editar.php?id=<?= $row['vehiculo_id'] ?>" class="btn btn-sm btn-primary">Editar</a>
-                        <button onclick="confirmarEliminacion(<?= $row['vehiculo_id'] ?>, 'vehiculo')"
-                            class="btn btn-sm btn-danger">Eliminar</button>
-                    </td>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Año</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
                 </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['vehiculo_id'] ?></td>
+                        <td><?= $row['marca_nombre'] ?></td>
+                        <td><?= $row['modelo'] ?></td>
+                        <td><?= $row['anio'] ?></td>
+                        <td>$<?= number_format($row['precio'], 2) ?></td>
+                        <td><?= $row['stock'] ?></td>
+                        <!-- En la tabla de vehículos -->
+                        <td>
+                            <a href="editar.php?id=<?= $row['vehiculo_id'] ?>" class="btn btn-sm btn-primary">Editar</a>
+                            <button onclick="confirmarEliminacion(<?= $row['vehiculo_id'] ?>, 'vehiculo')"
+                                class="btn btn-sm btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>
