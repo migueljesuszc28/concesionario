@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2025 a las 04:42:24
+-- Tiempo de generación: 14-06-2025 a las 09:32:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,8 +46,9 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`cliente_id`, `tipo_cliente`, `nombre`, `apellidos`, `email`, `telefono`, `direccion`, `fecha_registro`, `estado`, `licencia_conducir`) VALUES
 (3, 'Persona', 'Jorge', 'Blanquicett', 'Jorge@gmail.com', '3562498516', 'N/A', '2025-05-19', 1, 'si'),
-(4, 'Persona', 'Jhasazaray ', 'Lopez', 'Jhasa@gmail.com', '3260154926', 'Barrio el Country', '2025-05-27', 1, 'si'),
-(5, 'Persona', 'Miguel Jesús', 'Zuñiga Coneo', 'miguel@gmail.com', '3016542987', 'Brisas de Galicia', '2025-05-27', 1, 'si');
+(4, 'Persona', 'Jhasazaray ', 'Lopez ', 'Jhasa@gmail.com', '3260154926', 'Barrio el Country', '2025-05-27', 1, 'si'),
+(5, 'Persona', 'Miguel', 'Zuñiga Coneo', 'miguel@gmail.com', '3016542987', 'Brisas de Galicia', '2025-05-27', 1, 'si'),
+(6, 'Empresa', 'Sonda S.A.S', '', 'sonda@hotmail.com', '0000000000', 'cartagena de indias', '2025-06-03', 1, 'si');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,8 @@ CREATE TABLE `empleado` (
 
 INSERT INTO `empleado` (`empleado_id`, `nombre`, `apellidos`, `puesto`, `email`, `telefono`, `fecha_contratacion`, `salario`, `departamento`, `estado`) VALUES
 (1, 'Andres', 'Molina', 'Vendedor', 'Andres@gmail.com', '3165429870', '2025-05-27', 2000000.00, 'Ventas', 1),
-(2, 'Carolina', 'Consuegra', 'Vendedor', 'Carolina@gmail.com', '3235498526', '2025-05-14', 2000000.00, 'Ventas', 1);
+(2, 'Carolina', 'Consuegra', 'Vendedor', 'Carolina@gmail.com', '3235498526', '2025-05-14', 2000000.00, 'Ventas', 1),
+(7, 'Miguel', 'Zuñiga Coneo', 'Jefe', 'migueljesuszc@gmail.com', '3562498516', '2025-06-02', 2000000.00, 'Administracion', 1);
 
 -- --------------------------------------------------------
 
@@ -98,7 +100,7 @@ CREATE TABLE `financiamiento` (
 --
 
 INSERT INTO `financiamiento` (`financiamiento_id`, `venta_id`, `monto_financiado`, `plazo_meses`, `tasa_interes`, `fecha_aprobacion`, `institucion_financiera`, `estado`) VALUES
-(6, 11, 500000000.00, 12, 8.50, '2025-05-27', 'Banco De Bogota', 'En proceso'),
+(6, 11, 500000000.00, 12, 8.50, '2025-05-27', 'Banco De Bogota', 'Rechazado'),
 (7, 14, 800000000.00, 12, 8.50, '2025-05-27', 'BanColombia', 'Aprobado');
 
 -- --------------------------------------------------------
@@ -130,6 +132,31 @@ INSERT INTO `marca` (`marca_id`, `nombre`, `pais_origen`, `anio_fundacion`, `sit
 (8, 'Nissan', 'Japón', 1933, 'https://www.nissan.com'),
 (9, 'Hyundai', 'Corea del Sur', 1967, 'https://www.hyundai.com'),
 (10, 'Kia', 'Corea del Sur', 1944, 'https://www.kia.com');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `usuario_id` int(11) NOT NULL,
+  `nombre_usuario` varchar(50) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
+  `rol` enum('admin','vendedor') NOT NULL DEFAULT 'vendedor',
+  `empleado_id` int(11) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp(),
+  `estado` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`usuario_id`, `nombre_usuario`, `contraseña`, `rol`, `empleado_id`, `fecha_creacion`, `estado`) VALUES
+(1, 'admin', '$2y$10$KJZl6W7Q9NzXqYjVfHwCLeuTtLhFgDxU6mO7P5eRrZa8dF0.', 'admin', 1, '2025-06-03 21:02:53', 1),
+(2, 'carolina', '$2y$10$KJZl6W7Q9NzXqYjVfHwCLeuTtLhFgDxU6mO7P5eRrZa8dF0.', 'vendedor', 2, '2025-06-03 21:02:53', 1),
+(3, 'miguel', '$2y$10$onGL6H.koCC1D1R5W51HUudGbe1Cp/cfhBEVLEmPq336PN/g0xOxS', 'vendedor', NULL, '2025-06-03 21:33:47', 1);
 
 -- --------------------------------------------------------
 
@@ -185,7 +212,7 @@ CREATE TABLE `venta` (
 --
 
 INSERT INTO `venta` (`venta_id`, `cliente_id`, `empleado_id`, `vehiculo_id`, `fecha_venta`, `precio_final`, `metodo_pago`, `estado`, `descuento`) VALUES
-(11, 4, 2, 1, '2025-05-27 21:36:37', 500000000.00, 'Financiamiento', 'Completado', 0.00),
+(11, 4, 2, 1, '2025-05-27 21:36:37', 500000000.00, 'Efectivo', 'Completado', 0.00),
 (12, 3, 1, 2, '2025-05-27 21:37:43', 700000000.00, 'Tarjeta', 'Completado', 99999999.99),
 (13, 5, 2, 5, '2025-05-27 21:38:16', 40000000.00, 'Efectivo', 'Completado', 10000000.00),
 (14, 5, 1, 2, '2025-05-27 21:41:16', 800000000.00, 'Financiamiento', 'Completado', 0.00);
@@ -244,6 +271,14 @@ ALTER TABLE `marca`
   ADD PRIMARY KEY (`marca_id`);
 
 --
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`usuario_id`),
+  ADD UNIQUE KEY `nombre_usuario` (`nombre_usuario`),
+  ADD KEY `empleado_id` (`empleado_id`);
+
+--
 -- Indices de la tabla `vehiculo`
 --
 ALTER TABLE `vehiculo`
@@ -268,13 +303,13 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `empleado_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `empleado_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `financiamiento`
@@ -287,6 +322,12 @@ ALTER TABLE `financiamiento`
 --
 ALTER TABLE `marca`
   MODIFY `marca_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `vehiculo`
@@ -309,6 +350,12 @@ ALTER TABLE `venta`
 --
 ALTER TABLE `financiamiento`
   ADD CONSTRAINT `financiamiento_ibfk_1` FOREIGN KEY (`venta_id`) REFERENCES `venta` (`venta_id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`empleado_id`) REFERENCES `empleado` (`empleado_id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `vehiculo`
